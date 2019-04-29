@@ -1,0 +1,22 @@
+{
+  "name": "canvs",
+  "version": "1.0.0",
+  "description": "html5 canvs 特效",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MiracleBerserker/Miracle.git"
+  },
+  "keywords": [
+    "mengloveANGEL1.0"
+  ],
+  "author": "miracle",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MiracleBerserker/Miracle/issues"
+  },
+  "homepage": "https://github.com/MiracleBerserker/Miracle#readme"
+}
