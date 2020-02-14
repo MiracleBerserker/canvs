@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en" style="background: black;">
+<head>
+    <meta charset="UTF-8">
+    <title>炫酷正方体</title>
+</head>
+<style>
+    /*scroll to top*/
+    #scrollTop div{
+        left:0;
+        overflow:hidden;
+        position:absolute;
+        top:0;
+        width:149px;
+        margin:0;
+        padding:0
+    }
+    #scrollTop .level-2{
+        background:url(https://images2015.cnblogs.com/blog/894443/201707/894443-20170716165243785-2122236756.png) no-repeat scroll -149px 0 transparent;
+        display:none;
+        height:250px;
+        opacity:0;
+        z-index:1
+    }
+    #scrollTop .level-3{
+        background:none repeat scroll 0 0 transparent;
+        cursor:pointer;
+        display:block;
+        height:150px;
+        z-index:2
+    }
+    #scrollTop{
+        background:url(https://images2015.cnblogs.com/blog/894443/201707/894443-20170716165243785-2122236756.png) no-repeat scroll 0 0 transparent;
+        cursor:default;
+        display:block;
+        height:180px;
+        overflow:hidden;
+        position:fixed;
+        right:0;
+        top:90%;
+        width:149px;
+        z-index:11;
+        margin:-125px 0 0;
+        padding:0
+    }
+    
+
+    .wrap {
+        width: 100px;
+        height: 100px;
+        /*margin: 150px;*/
+        position: relative;
+        margin: 20% auto;
+    }
+    
+   
+    .cube {
+        width: 50px;
+        height: 50px;
+        margin: 0 auto;
+        transform-style: preserve-3d;
+        transform: rotateX(-30deg) rotateY(-80deg);
+        animation: rotate linear 20s infinite;
+    }
+    
+    @-webkit-keyframes rotate {
+        from {
+            transform: rotateX(0deg) rotateY(0deg);
+        }
+        to {
+            transform: rotateX(360deg) rotateY(360deg);
+        }
+    }
+    
+    .cube div {
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        /*opacity: 0.8;*/
+        transition: all .4s;
+    }
+    
+    /*å®šä¹‰æ‰€æœ‰å›¾ç‰‡æ ·å¼*/
+    .pic {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .cube .out_front {
+        transform: rotateY(0deg) translateZ(100px);
+    }
+    
+    .cube .out_back {
+        transform: translateZ(-100px) rotateY(180deg);
+    }
+    
+    .cube .out_left {
+        transform: rotateY(-90deg) translateZ(100px);
+    }
+    
+    .cube .out_right {
+        transform: rotateY(90deg) translateZ(100px);
+    }
+    
+    .cube .out_top {
+        transform: rotateX(90deg) translateZ(100px);
+    }
+    
+    .cube .out_bottom {
+        transform: rotateX(-90deg) translateZ(100px);
+    }
+    
+    /*å®šä¹‰å°æ­£æ–¹ä½“æ ·å¼*/
+    .cube span {
+        display: block;
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        top: 50px;
+        left: 50px;
+    }
+    
+    .cube .in_pic {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .cube .in_front {
+        transform: rotateY(0deg) translateZ(50px);
+    }
+    
+    .cube .in_back {
+        transform: translateZ(-50px) rotateY(180deg);
+    }
+    
+    .cube .in_left {
+        transform: rotateY(-90deg) translateZ(50px);
+    }
+    
+    .cube .in_right {
+        transform: rotateY(90deg) translateZ(50px);
+    }
+    
+    .cube .in_top {
+        transform: rotateX(90deg) translateZ(50px);
+    }
+    
+    .cube .in_bottom {
+        transform: rotateX(-90deg) translateZ(50px);
+    }
+    
+    /*é¼ æ ‡ç§»å…¥åŽæ ·å¼*/
+    .cube:hover .out_front {
+        transform: rotateY(0deg) translateZ(200px);
+    }
+    
+    .cube:hover .out_back {
+        transform: translateZ(-200px) rotateY(180deg);
+    }
+    
+    .cube:hover .out_left {
+        transform: rotateY(-90deg) translateZ(200px);
+    }
+    
+    .cube:hover .out_right {
+        transform: rotateY(90deg) translateZ(200px);
+    }
+    
+    .cube:hover .out_top {
+        transform: rotateX(90deg) translateZ(200px);
+    }
+    
+    .cube:hover .out_bottom {
+        transform: rotateX(-90deg) translateZ(200px);
+    }
+    
+    
+    
+    
+    
+    
+    
+    .postTitle2{
+        background-color:#FF9;
+        font-size:22px;
+        margin-bottom:3px;
+    }
+    
+    #home {
+        
+        margin: 0 auto;
+        width: 60%;
+        min-width: 950px;
+        opacity: 0.87;
+        box-shadow: 0 2px 6px rgba(100, 100, 100, 0.3);
+        padding: 50px;
+        margin-top: 10px;
+        margin-bottom: 50px;
+        
+    }
+    
+    #home .menu{
+        display:none;
+    }
+    #navigator{
+        display:none;
+    }
+    
+    #header{display:none;}
+    #test33 ul {
+        margin: 10px;
+        text-align:center;
+        padding: 0;
+        height:70px;
+        list-style-type: none; /*åŽ»é™¤liå‰çš„æ ‡æ³¨*/
+        background-color: #333;
+        overflow: hidden; /*éšè—æº¢å‡ºçš„éƒ¨åˆ†ï¼Œä¿æŒä¸€è¡Œ*/
+        font-size:16px;
+    }
+    
+    
+    #test33 li {
+        float: left; /*å·¦æµ®åŠ¨*/
+    }
+    
+    
+    #test33 li a, .dropbtn {
+        display: inline-block; /*è®¾ç½®æˆå—*/
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        padding: 14px 16px;
+    }
+    
+    
+    #test33 li a:hover, .dropdown:hover .dropbtn { /*é¼ æ ‡ç§»ä¸ŠåŽ»ï¼Œæ”¹å˜èƒŒæ™¯é¢œè‰²*/
+        background-color: blue;
+    }
+    #test33 .dropdown  .dropbtn {
+        color:white;
+    }
+    
+    
+    #test33 .dropdown {
+        /*display:inline-blockå°†å¯¹è±¡å‘ˆé€’ä¸ºå†…è”å¯¹è±¡ï¼Œä½†æ˜¯å¯¹è±¡çš„å†…å®¹ä½œä¸ºå—å¯¹è±¡å‘ˆé€’ã€‚æ—è¾¹çš„å†…è”å¯¹è±¡ä¼šè¢«å‘ˆé€’åœ¨åŒä¸€è¡Œå†…ï¼Œå…è®¸ç©ºæ ¼ã€‚*/
+        display: inline-block;
+    }
+    
+    
+    #test33 .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 100px rgba(0,0,0,0);
+    }
+    
+    
+    #test33 .dropdown-content a {
+        display: block;
+        color: black;
+        padding: 8px 10px;
+        text-decoration:none;
+    }
+    
+    
+    #test33 .dropdown-content a:hover {
+        background-color: #a1a1a1;
+    }
+    
+    
+    #test33 .dropdown:hover .dropdown-content{
+        display: block;
+    }
+    
+    
+    
+    
+    .postTitle {
+        font-size:20px;
+        font-weight:bold;
+        color:#009CB5;
+        font-family: "è¡Œæ¥·";
+        border-left: 3px solid #21759b;
+        margin-bottom: 10px;
+        margin-left:20px;
+        float: right;
+        width: 100%;
+        clear: both;
+    }
+    .entrylistPosttitle{
+        font-size:20px;
+        font-weight:bold;
+        color:#009CB5;
+        font-family: "è¡Œæ¥·";
+        border-left: 3px solid #21759b;
+        
+    }
+    
+    
+    
+    
+    .entrylistItemTitle{
+        background-color:#FF9;
+        font-size:22px;
+        margin-bottom:3px;
+        
+    }
+    .masked{
+        display: block;
+        width: 600px;
+        height: 100px;
+        /*æ¸å˜èƒŒæ™¯*/
+        background-image: -webkit-linear-gradient(left, #3498db, #f47920 10%, #d71345 20%, #f7acbc 30%,
+        #ffd400 40%, #3498db 50%, #f47920 60%, #d71345 70%, #f7acbc 80%, #ffd400 90%, #3498db);
+        color: transparent; /*æ–‡å­—å¡«å……è‰²ä¸ºé€æ˜Ž*/
+        -webkit-text-fill-color: transparent;
+        -webkit-background-clip: text;          /*èƒŒæ™¯å‰ªè£ä¸ºæ–‡å­—ï¼Œåªå°†æ–‡å­—æ˜¾ç¤ºä¸ºèƒŒæ™¯*/
+        /* åŠ¨ç”» */
+        animation: masked-animation 4s infinite linear;
+        
+    }
+    
+    body {
+        filter:alpha(opacity=1.0);-moz-opacity:1.0;opacity:1.50;
+        background:url('');
+        background-position: initial; background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-origin: initial; background-clip: initial;
+        height:100%;
+        width:100%;
+        
+    }
+    
+    
+    
+    
+    
+    
+    #blogTitle {
+        height: 100px;  /*é«˜åº¦*/
+        clear: both;
+        background-color: rgba(245, 245, 245, 0);
+    }
+    #blogTitle h1 {
+        font-size: 36px;
+        font-weight: bold;
+        line-height: 1.8em;/*åŽŸå§‹ 1.6em*/
+        margin-top: 10px;/*åŽŸå§‹ 15px */
+        color: #548B54;
+    }
+    #blogTitle h2 {
+        font-weight: normal;
+        font-size: 17px;/*åŽŸå§‹ 16px ï¼›font-size: 1.0rem;*/
+        line-height: 1.8;
+        color: #111;
+        font-weight: bold;
+        text-align: right;
+        float: right;
+    }
+    #blogTitle h3 {
+        font-weight: normal;
+        font-size: 14px;/*åŽŸå§‹ 16px ï¼›font-size: 1.0rem;*/
+        line-height: 1.8;
+        color: #4F94CD;
+        font-weight: bold;
+        text-align: right;
+        float: right;
+    }
+    #navList a:link, #navList a:visited, #navList a:active{
+        color: black;
+        font-size: 18px;
+        font-weight: bold;
+    }
+    
+    
+    
+<!-- 把鼠标变成自定义图片 -->
+       /** {*/
+           /*cursor: url("https://files-cdn.cnblogs.com/files/-qing-/1.ico"),auto!important*/
+       /*}*/
+    /*:active {*/
+        /*cursor: url("https://files-cdn.cnblogs.com/files/-qing-/2.ico"),auto!important*/
+    /*}*/
+    
+    
+    
+    
+    
+    
+    
+    #cnblogs_post_body
+    {
+        color: black;
+        font: 0.875em/1.5em "å¾®è½¯é›…é»‘" , "PTSans" , "Arial" ,sans-serif;
+        font-size: 15px;
+    }
+    #cnblogs_post_body h1    {
+        background: #2DFFED;
+        border-radius: 6px 6px 6px 6px;
+        box-shadow: 0 0 0 1px #5F5A4B, 1px 1px 6px 1px rgba(10, 10, 0, 0.5);
+        color: #FFFFFF;
+        font-family: "å¾®è½¯é›…é»‘" , "å®‹ä½“" , "é»‘ä½“" ,Arial;
+        font-size: 23px;
+        font-weight: bold;
+        height: 25px;
+        line-height: 25px;
+        margin: 18px 0 !important;
+        padding: 8px 0 5px 5px;
+        text-shadow: 2px 2px 3px #222222;
+    }
+    #cnblogs_post_body h2    {
+        background: #CE89FF;
+    //background: #006699;
+        border-radius: 6px 6px 6px 6px;
+        box-shadow: 0 0 0 1px #5F5A4B, 1px 1px 6px 1px rgba(10, 10, 0, 0.5);
+        color: #FFFFFF;
+        font-family: "å¾®è½¯é›…é»‘" , "å®‹ä½“" , "é»‘ä½“" ,Arial;
+        font-size: 20px;
+        font-weight: bold;
+        height: 25px;
+        line-height: 25px;
+        margin: 18px 0 !important;
+        padding: 8px 0 5px 5px;
+        text-shadow: 2px 2px 3px #222222;
+    }
+    #cnblogs_post_body h3    {
+        background: #2B6695;
+        border-radius: 6px 6px 6px 6px;
+        box-shadow: 0 0 0 1px #5F5A4B, 1px 1px 6px 1px rgba(10, 10, 0, 0.5);
+        color: #FFFFFF;
+        font-family: "å¾®è½¯é›…é»‘" , "å®‹ä½“" , "é»‘ä½“" ,Arial;
+        font-size: 18px;
+        font-weight: bold;
+        height: 25px;
+        line-height: 25px;
+        margin: 18px 0 !important;
+        padding: 8px 0 5px 5px;
+        text-shadow: 2px 2px 3px #222222;
+    }
+    #cnblogs_post_body h4{
+        background: #2B6600;
+        border-radius: 6px 6px 6px 6px;
+        box-shadow: 0 0 0 1px #5F5A4B, 1px 1px 6px 1px rgba(10, 10, 0, 0.5);
+        color: #FFFFFF;
+        font-family: "å¾®è½¯é›…é»‘" , "å®‹ä½“" , "é»‘ä½“" ,Arial;
+        font-size: 16px;
+        font-weight: bold;
+        height: 24px;
+        line-height: 23px;
+        margin: 12px 0 !important;
+        padding: 5px 0 5px 10px;
+        text-shadow: 2px 2px 3px #222222;
+    }
+    
+    
+    /* è®¾ç½®ç­¾åæ ¼å¼ å®šåˆ¶cssæ ·å¼ */
+    #MySignature {
+        display: none;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 1px 1px 1px #6B6B6B;
+        padding: 10px;
+        line-height: 1.5;
+        text-shadow: 1px 1px 1px #FFF;
+        font-size: 16px;
+        font-family: â€˜Microsoft Yaheiâ€˜;
+    }
+    
+    
+    .cnblogs_code pre {
+        font-family: Courier New!important;
+        font-size: 14px!important;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+    }
+    
+    .cnblogs_code span {
+        font-family: Courier New!important;
+        font-size: 14px!important;
+        line-height: 1.5!important;
+    }
+    
+    
+    
+    
+    #cb_post_title_url{
+        background: #000000;
+        border-radius: 7px 8px 8px 8px;
+        box-shadow: 0 0 0 1px #000000, 1px 1px 5px 1px rgba(10, 10, 0, 0.5);
+        color: #FFFFFF;
+        font-family: "å¾®è½¯é›…é»‘" , "å®‹ä½“" , "é»‘ä½“" ,Arial;
+        font-size: 30px;
+        font-weight: bold;
+        height: 35px;
+        line-height: 100px;
+        margin: 25px 0 !important;
+        padding: 0px 0px 5px 5px;
+        text-shadow: 2px 2px 3px #000000;
+        
+    }
+    
+    
+    /*markdown ä»£ç æ ·å¼*/
+    tt, code, kbd, samp {
+        font-family: consolas;
+    }
+    .prettyprint, pre.prettyprint {
+        background-color:#272822;
+        border:1px solid #272822;
+        overflow: hidden;
+        margin:10px 0;
+        font-family:Helvetica,"Hiragino Sans GB","å¾®è½¯é›…é»‘","Microsoft YaHei UI",SimSun,SimHei, arial, sans-serif;
+    }
+    .prettyprint.linenums, pre.prettyprint.linenums {
+        -webkit-box-shadow: inset 40px 0 0#39382E, inset 41px 0 0 #464741;
+        -moz-box-shadow: inset 40px 0 0#39382E, inset 41px 0 0 #464741;
+        box-shadow: inset 40px 0 0#39382E, inset 41px 0 0 #464741;
+    }
+    .prettyprint.linenums ol, pre.prettyprint.linenums ol {
+        padding-left:28px!important;
+        margin:0000px;
+    }
+    .prettyprint.linenums ol li, pre.prettyprint.linenums ol li {
+        padding-left:12px;
+        color:#bebec5;
+        line-height:20px;
+        margin-left:0;
+        margin:5px;
+        list-style:decimal;
+    }
+    .prettyprint .com {
+        color:#93a1a1;
+    }
+    .prettyprint .lit {
+        color:#AE81FF;
+    }
+    .prettyprint .pun,.prettyprint .opn,.prettyprint .clo {
+        color:#F8F8F2;
+    }
+    .prettyprint .fun {
+        color:#dc322f;
+    }
+    .prettyprint .str,.prettyprint .atv {
+        color:#E6DB74;
+    }
+    .prettyprint .kwd,.prettyprint .tag {
+        color:#F92659;
+    }
+    .prettyprint .typ,.prettyprint .atn,.prettyprint .dec,.prettyprint .var{
+        color:#A6E22E;
+    }
+    .prettyprint .pln {
+        color:#66D9EF;
+    }
+    #ad_t2,#cnblogs_c1,#under_post_news,#cnblogs_c2,#under_post_kb {
+        display:none; !important
+    }
+
+
+
+    .bo {
+        width: 200px;
+        height: 200px;
+        
+        position: relative;
+    }
+    .side {
+        top: 40px !important;
+        width: 88px !important;
+        height: 88px !important;
+        border-radius: 88px !important;
+        position: absolute !important;
+    }
+    .right {
+        right: 25px;
+    
+    }
+    .left {
+        z-index: 2;
+        left: 25px;
+    }
+    .center {
+        position: absolute !important;
+        width: 84px !important;
+        height: 84px !important;
+        background: linear-gradient(-45deg,#b80734 0%,#d5093c 40%) !important;
+        bottom: 40px;
+        left: 58px;
+        z-index: -999;
+    }
+    .heart {
+        background: linear-gradient(-90deg, #F50A45 0%, #d5093c 40%);
+        box-shadow: 0 0 40px #d5093c;
+        transform: scale(1) rotate(225deg);
+        animation: beat 1s ease 0s infinite;
+    }
+    .myheart {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: #ffa5a5;
+        background: linear-gradient(to bottom,#ffa5a5 0%,#ffd3d3 100%);
+        z-index: 100;
+        display: none;
+        overflow: hidden;
+    }
+
+    @keyframes beat {
+        0%{
+            transform: scale(1) rotate(225deg);
+            box-shadow: 0 0 40px #d5093c;
+        }
+        50%{
+            transform: scale(1.1) rotate(225deg);
+            box-shadow: 0 0 70px #d5093c;
+        }
+        100% {
+            transform: scale(1) rotate(225deg);
+            box-shadow: 0 0 40px #d5093c;
+        }
+    }
+</style>
+<body>
+       
+            <!--<div class="bo pic">-->
+                <!--<div class="heart side left"></div>-->
+                <!--<div class="heart center"></div>-->
+                <!--<div class="heart side right "></div>-->
+            <!--</div>-->
+     
+<div class="wrap">
+    <!--包裹所有元素的容器-->
+    <div class="cube">
+        <!--前面图片 -->
+        <div class="out_front">
+            <!--<img src="../img/n-1.jpg" class="pic">-->
+            <div style="width: 100%;height: 100%;position: relative;">
+                <div class="bo pic">
+                    <div style="background-color: rgba(0,0,0,0);position: absolute;color: #FFFFFF;">
+                        <span style="left: 0;top: 0;width: auto;height: auto;">琳</span>
+                        <span style="right: 0;left:auto;top: 0;width: auto;height: auto;">琳</span>
+                        <span style="left: 0;right:auto;top: auto;bottom: 0;width: auto;height: auto;">琳</span>
+                        <span style="right: 0;left:auto;top: auto;bottom: 0;width: auto;height: auto;">琳</span>
+                    </div>
+                    <div class="heart side left"></div>
+                    <div class="heart center"></div>
+                    <div class="heart side right "></div>
+                </div>
+            </div>
+            
+        </div>
+        <!--后面图片 -->
+        <div class="out_back">
+            <!--<img src="../img/n-1.jpg" class="pic">-->
+            <div style="width: 100%;height: 100%;position: relative;">
+                <div class="bo pic">
+                    <div style="background-color: rgba(0,0,0,0);position: absolute;color: #FFFFFF;">
+                        <span style="left: 0;top: 0;width: auto;height: auto;">琳</span>
+                        <span style="right: 0;left:auto;top: 0;width: auto;height: auto;">琳</span>
+                        <span style="left: 0;right:auto;top: auto;bottom: 0;width: auto;height: auto;">琳</span>
+                        <span style="right: 0;left:auto;top: auto;bottom: 0;width: auto;height: auto;">琳</span>
+                    </div>
+                    <div class="heart side left"></div>
+                    <div class="heart center"></div>
+                    <div class="heart side right "></div>
+                </div>
+            </div>
+        </div>
+        <!--左面图片 -->
+        <div class="out_left">
+            <!--<img src="../img/n-1.jpg" class="pic">-->
+            <div style="width: 100%;height: 100%;position: relative;">
+                <div class="bo pic">
+                    <div style="background-color: rgba(0,0,0,0);position: absolute;color: #FFFFFF;">
+                        <span style="left: 0;top: 0;width: auto;height: auto;">琳</span>
+                        <span style="right: 0;left:auto;top: 0;width: auto;height: auto;">琳</span>
+                        <span style="left: 0;right:auto;top: auto;bottom: 0;width: auto;height: auto;">琳</span>
+                        <span style="right: 0;left:auto;top: auto;bottom: 0;width: auto;height: auto;">琳</span>
+                    </div>
+                    <div class="heart side left"></div>
+                    <div class="heart center"></div>
+                    <div class="heart side right "></div>
+                </div>
+            </div>
+        </div>
+        <!--右面图片 -->
+        <div class="out_right">
+            <!--<img src="../img/n-1.jpg" class="pic">-->
+            <div style="width: 100%;height: 100%;position: relative;">
+                <div class="bo pic">
+                    <div style="background-color: rgba(0,0,0,0);position: absolute;color: #FFFFFF;">
+                        <span style="left: 0;top: 0;width: auto;height: auto;">琳</span>
+                        <span style="right: 0;left:auto;top: 0;width: auto;height: auto;">琳</span>
+                        <span style="left: 0;right:auto;top: auto;bottom: 0;width: auto;height: auto;">琳</span>
+                        <span style="right: 0;left:auto;top: auto;bottom: 0;width: auto;height: auto;">琳</span>
+                    </div>
+                    <div class="heart side left"></div>
+                    <div class="heart center"></div>
+                    <div class="heart side right "></div>
+                </div>
+            </div>
+        </div>
+        <!--上面图片 -->
+        <div class="out_top">
+            <!--<img src="../img/n-1.jpg" class="pic">-->
+            <div style="width: 100%;height: 100%;position: relative;">
+                <div class="bo pic">
+                    <div style="background-color: rgba(0,0,0,0);position: absolute;color: #FFFFFF;">
+                        <span style="left: 0;top: 0;width: auto;height: auto;">琳</span>
+                        <span style="right: 0;left:auto;top: 0;width: auto;height: auto;">琳</span>
+                        <span style="left: 0;right:auto;top: auto;bottom: 0;width: auto;height: auto;">琳</span>
+                        <span style="right: 0;left:auto;top: auto;bottom: 0;width: auto;height: auto;">琳</span>
+                    </div>
+                    <div class="heart side left"></div>
+                    <div class="heart center"></div>
+                    <div class="heart side right "></div>
+                </div>
+            </div>
+        </div>
+        <!--下面图片 -->
+        <div class="out_bottom">
+            <!--<img src="../img/n-1.jpg" class="pic">-->
+            <div style="width: 100%;height: 100%;position: relative;">
+                <div style="background-color: rgba(0,0,0,0);position: absolute;color: #FFFFFF;">
+                    <span style="left: 0;top: 0;width: auto;height: auto;">琳</span>
+                    <span style="right: 0;left:auto;top: 0;width: auto;height: auto;">琳</span>
+                    <span style="left: 0;right:auto;top: auto;bottom: 0;width: auto;height: auto;">琳</span>
+                    <span style="right: 0;left:auto;top: auto;bottom: 0;width: auto;height: auto;">琳</span>
+                </div>
+                <div class="bo pic">
+                    <div class="heart side left"></div>
+                    <div class="heart center"></div>
+                    <div class="heart side right "></div>
+                </div>
+            </div>
+        </div>
+        
+        <!--小正方体 -->
+        <span class="in_front">
+            <img src="../img/n-1.jpg" class="in_pic">
+        </span>
+        <span class="in_back">
+             <img src="../img/n-2.jpg" class="in_pic">
+        </span>
+        <span class="in_left">
+            <img src="../img/n-3.jpg" class="in_pic">
+        </span>
+        <span class="in_right">
+            <img src="../img/n-4.jpg" class="in_pic">
+        </span>
+        <span class="in_top">
+            <img src="../img/n-5.jpg" class="in_pic">
+        </span>
+        <span class="in_bottom">
+            <img src="../img/n-6.jpg" class="in_pic">
+        </span>
+    </div>
+    <!--<canvas id="c_n21" width="1920" height="402" style="position: fixed; top: 0; left: 0; z-index: -2; opacity: 1;"></canvas>-->
+</div>
+
+
+</body>
+</html>
